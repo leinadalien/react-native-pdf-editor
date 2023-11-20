@@ -8,10 +8,29 @@ import {
   Platform,
 } from 'react-native';
 import { PDFEditorView } from '@ornament-health/react-native-pdf-editor';
+import DocumentsHandler, {DocumentsHandlerResult} from './DocumentsHandler';
 
 type PDFEVRef = ComponentRef<typeof PDFEditorView>;
 
 export default function App() {
+
+  const source1 = RNFS.ExternalDirectoryPath + '/img1.jpg';
+  const source2 = RNFS.ExternalDirectoryPath + '/img2.jpeg';
+  const source3 = RNFS.ExternalDirectoryPath + '/book.pdf';
+
+  const onPressScroll = async () => {
+    await DocumentsHandler.process({
+       documents: [source1, source2, source3],
+       grayscale: true,
+       expectedWidth: 100
+     })
+       .then(res => {
+        console.log('RESULTS: ', res);
+      })
+       .catch(error => console.log(error.message));    
+  };
+
+
   const pdfRef = useRef<PDFEVRef>(null);
 
   const sourcePDF =
@@ -62,6 +81,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.topView}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={onPressScroll}>
+            <Text style={styles.buttonText}>Scroll</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={onPressUndo}>
             <Text style={styles.buttonText}>Undo</Text>

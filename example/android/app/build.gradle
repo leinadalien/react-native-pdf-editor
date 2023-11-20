@@ -3,10 +3,27 @@ apply plugin: "com.facebook.react"
 
 import com.android.build.OutputFile
 
+
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
+buildscript {
+    def kotlinVersion = "1.8.22"
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        // noinspection DifferentKotlinGradleVersion
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+apply plugin: "kotlin-android"
+
 react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '..'
@@ -158,6 +175,12 @@ dependencies {
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
+    def kotlinVersion = "1.8.22"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    def coroutinesVersion = "1.7.1"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    def itextVersion = "8.0.1"
+    implementation "com.itextpdf:itext7-core:$itextVersion"
 
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
