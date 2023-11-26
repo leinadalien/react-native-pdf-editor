@@ -26,7 +26,7 @@ data class Pdf(
             bitmap = makeBitmapGrayscale(bitmap)
         }
         val name = File(documentUrl).nameWithoutExtension
-        val outputName = "$outputDirectory/$name-page-$pageIndex-thumbnail.jpg"
+        val outputName = "$outputDirectory/${name}_${pageIndex}_resized.png"
         saveBitmap(bitmap, outputName)
         return outputName
     }

@@ -27,7 +27,7 @@ data class Image(
             resizedBitmap = makeBitmapGrayscale(resizedBitmap)
         }
         val name = File(documentUrl).nameWithoutExtension
-        val outputName = "$outputDirectory/$name-thumbnail.jpg"
+        val outputName = "$outputDirectory/${name}_resized.png"
         saveBitmap(resizedBitmap, outputName)
         return outputName
     }

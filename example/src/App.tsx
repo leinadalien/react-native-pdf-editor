@@ -1,47 +1,29 @@
 import React, { ComponentRef, useRef } from 'react';
 import RNFS from 'react-native-fs';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Platform,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { PDFEditorView } from '@ornament-health/react-native-pdf-editor';
-import DocumentsHandler, {DocumentsHandlerResult} from './DocumentsHandler';
+import DocumentsHandler from './DocumentsHandler';
 
 type PDFEVRef = ComponentRef<typeof PDFEditorView>;
 
 export default function App() {
-
   const source1 = RNFS.ExternalDirectoryPath + '/img1.jpg';
   const source2 = RNFS.ExternalDirectoryPath + '/img2.jpeg';
   const source3 = RNFS.ExternalDirectoryPath + '/book.pdf';
 
   const onPressScroll = async () => {
     await DocumentsHandler.process({
-       documents: [source1, source2, source3],
-       grayscale: true,
-       expectedWidth: 100
-     })
-       .then(res => {
+      documents: [source1, source2, source3],
+      grayscale: true,
+      expectedWidth: 100,
+    })
+      .then((res) => {
         console.log('RESULTS: ', res);
       })
-       .catch(error => console.log(error.message));    
+      .catch((error) => console.log(error.message));
   };
 
-
   const pdfRef = useRef<PDFEVRef>(null);
-
-  const sourcePDF =
-    Platform.OS === 'ios'
-      ? 'file://' + RNFS.MainBundlePath + '/example.pdf'
-      : RNFS.ExternalDirectoryPath + '/book.pdf';
-
-  //   const sourceJPG =
-  //     Platform.OS === 'ios'
-  //       ? RNFS.MainBundlePath + '/example.jpg'
-  //       : RNFS.ExternalDirectoryPath + '/example.jpg';
 
   enum CanvasType {
     Image = 'image',
@@ -49,16 +31,15 @@ export default function App() {
   }
 
   const options = {
-    fileName: sourcePDF,
-    canvasType: CanvasType.PDF,
+    filePath: [source2, source1, source3],
+    canvasType: CanvasType.Image,
     isToolBarHidden: false,
     viewBackgroundColor: '#40a35f',
     lineColor: '#4287f5',
     lineWidth: 40,
-    startWithEdit: true,
   };
 
-  const handleSavePDF = (e: string | null) => {
+  const handleSavePDF = (e: string[] | null) => {
     if (e === null) {
       console.log('got null value for url:', e);
     } else {
